@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  django_web:
+    build: ./django_backend
+    command: sh docker-entrypoint.prod.sh
+    expose:
+      - 8000
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/usr/src/django_backend/staticfiles
+      - media_volume:/usr/src/django_backend/media
+    restart: always
+  react_frontend:
+    stdin_open: true
+    build: ./react_frontend
+    expose:
+      - 3000
+    build:
+      context: ./react_frontend/
+      dockerfile: Dockerfile.prod
+    env_file:
+      - ./.env.prod
+    restart: always
+  db:
+    image: postgres:13.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.prod.db
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - django_web
+      - react_frontend
+    volumes:
+      - static_volume:/usr/src/django_backend/staticfiles
+      - media_volume:/usr/src/django_backend/media
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

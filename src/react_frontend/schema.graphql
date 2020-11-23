@@ -1,0 +1,117 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+input CreateMemeInput {
+  image: String
+  title: String
+  clientMutationId: String
+}
+
+type CreateMemePayload {
+  meme: MemeNode
+  clientMutationId: String
+}
+
+scalar DateTime
+
+type DjangoDebug {
+  sql: [DjangoDebugSQL]
+}
+
+type DjangoDebugSQL {
+  vendor: String!
+  alias: String!
+  sql: String
+  duration: Float!
+  rawSql: String!
+  params: String!
+  startTime: Float!
+  stopTime: Float!
+  isSlow: Boolean!
+  isSelect: Boolean!
+  transId: String
+  transStatus: String
+  isoLevel: String
+  encoding: String
+}
+
+type MemeNode implements Node {
+  id: ID!
+  author: UserNode
+  dateAdded: DateTime!
+  image: String!
+  likes: Int!
+  title: String!
+}
+
+type MemeNodeConnection {
+  pageInfo: PageInfo!
+  edges: [MemeNodeEdge]!
+}
+
+type MemeNodeEdge {
+  node: MemeNode
+  cursor: String!
+}
+
+type Mutation {
+  createMeme(input: CreateMemeInput!): CreateMemePayload
+  upvoteMeme(input: UpVoteMemeInput!): UpVoteMemePayload
+  _debug: DjangoDebug
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  meme(id: ID!): MemeNode
+  allMemes(before: String, after: String, first: Int, last: Int, orderBy: String): MemeNodeConnection
+  user(id: ID!): UserNode
+  allUsers(before: String, after: String, first: Int, last: Int): UserNodeConnection
+  _debug: DjangoDebug
+}
+
+input UpVoteMemeInput {
+  meme: ID
+  clientMutationId: String
+}
+
+type UpVoteMemePayload {
+  meme: MemeNode
+  clientMutationId: String
+}
+
+type UserNode implements Node {
+  id: ID!
+  password: String!
+  lastLogin: DateTime
+  isSuperuser: Boolean!
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  isStaff: Boolean!
+  isActive: Boolean!
+  dateJoined: DateTime!
+  memeSet(before: String, after: String, first: Int, last: Int): MemeNodeConnection!
+}
+
+type UserNodeConnection {
+  pageInfo: PageInfo!
+  edges: [UserNodeEdge]!
+}
+
+type UserNodeEdge {
+  node: UserNode
+  cursor: String!
+}
