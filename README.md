@@ -45,7 +45,6 @@ localhost:8000/graphl
 **Page should show up with no memes, try to add some.**
 
 [![moje_meme_page](https://github.com/adamlitz/memes-page/blob/main/src/react_frontend/public/moje_meme_page.png "moje_meme_page")](https://github.com/adamlitz/memes-page/blob/main/src/react_frontend/public/moje_meme_page.png "asd")
-[![moje_meme_add_form](https://github.com/adamlitz/memes-page/blob/main/src/react_frontend/public/moje_meme_add_form.png "moje_meme_add_form")](https://github.com/adamlitz/memes-page/blob/main/src/react_frontend/public/moje_meme_add_form.png "asd")
 
 ## Built With
 
